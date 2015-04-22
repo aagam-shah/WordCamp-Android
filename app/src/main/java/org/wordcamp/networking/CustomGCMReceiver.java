@@ -12,6 +12,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordcamp.R;
+import org.wordcamp.db.DBCommunicator;
 
 import java.util.Random;
 
@@ -34,6 +35,11 @@ public class CustomGCMReceiver extends BroadcastReceiver {
             String descr = json.getString("descr");
             String link = json.getString("link");
 
+
+            DBCommunicator communicator = new DBCommunicator(context);
+            communicator.start();
+            communicator.addNewNotif(type,title,descr,link);
+            communicator.close();
             showNotif(context,title,descr,link);
         } catch (JSONException e) {
             e.printStackTrace();

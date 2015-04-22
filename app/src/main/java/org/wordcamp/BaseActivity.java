@@ -21,12 +21,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -57,6 +68,10 @@ public class BaseActivity extends ActionBarActivity implements UpcomingWCFragmen
 
     public DBCommunicator communicator;
 
+    private ActionBarDrawerToggle toggle;
+
+    private DrawerLayout drawerLayout;
+
     public List<WordCampDB> wordCampsList;
 
     @Override
@@ -84,6 +99,12 @@ public class BaseActivity extends ActionBarActivity implements UpcomingWCFragmen
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent));
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(mPager);
+
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.notification
+                ,R.string.app_name);
+        toggle.syncState();
     }
 
 
@@ -94,7 +115,28 @@ public class BaseActivity extends ActionBarActivity implements UpcomingWCFragmen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_base_act,menu);
+        getMenuInflater().inflate(R.menu.menu_base_act, menu);
+
+        MenuItem item = menu.findItem(R.id.badge);
+        MenuItemCompat.setActionView(item, R.layout.toolbar_notif);
+        View v  = MenuItemCompat.getActionView(item);
+        TextView tv = (TextView) v.findViewById(R.id.notif_tv);
+        int count  = communicator.getUnreadNotifs();
+        tv.setText(""+count);
+
+        ImageView iv = (ImageView)v.findViewById(R.id.notif);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("touch", "notif");
+                if (!drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
+                } else {
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                }
+            }
+
+        });
         return true;
     }
 

@@ -1,18 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+    android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/pager_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/header"
@@ -20,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:orientation="vertical">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -27,11 +20,52 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             app:theme="@style/SlidingLayoutTab"
-            app:popupTheme="@style/SlidingLayoutTabPopUp"/>
-        <org.wordcamp.widgets.SlidingTabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_height" />
+            app:popupTheme="@style/SlidingLayoutTabPopUp" />
     </LinearLayout>
 
-</FrameLayout>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/headers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:orientation="vertical">
+
+                <org.wordcamp.widgets.SlidingTabLayout
+                    android:id="@+id/sliding_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tab_height" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/pager_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/fragment_drawer"
+            android:name="org.wordcamp.NotificationFragment"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="right" />
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
